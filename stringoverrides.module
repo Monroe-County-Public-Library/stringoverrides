@@ -27,8 +27,8 @@ function stringoverrides_help($path, $arg) {
   if ($path == 'admin/config/regional/stringoverrides' || strpos($path, 'admin/config/regional/stringoverrides/manage/') !== FALSE) {
     $languages = language_list();
     if (isset($arg[5]) && isset($languages[$arg[5]])) {
-        $lang = $languages[$arg[5]]->native;
-        return '<p>' . t('The following provides a quick and easy way of replacing text in @lang.', array('@lang' => $lang)) . '</p>';
+      $lang = $languages[$arg[5]]->native;
+      return '<p>' . t('The following provides a quick and easy way of replacing text in @lang.', array('@lang' => $lang)) . '</p>';
     }
     return '<p>' . t('The following provides a quick and easy way of replacing text.') . '</p>';
   }
@@ -52,7 +52,7 @@ function stringoverrides_menu() {
   $items['admin/config/regional/stringoverrides'] = array(
     'title' => 'String overrides',
     'description' => 'Provides a quick and easy way of replacing text on the site.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('stringoverrides_admin'),
     'access arguments' => array('administer string overrides'),
     'type' => MENU_NORMAL_ITEM,
@@ -69,7 +69,7 @@ function stringoverrides_menu() {
         'title arguments' => array('@lang' => $name),
         'page arguments' => array('stringoverrides_admin', $code),
         'access arguments' => array('administer string overrides'),
-        'type' => $language->language == $code ? MENU_DEFAULT_LOCAL_TASK : MENU_LOCAL_TASK,
+        'type' => $language->language == $code?MENU_DEFAULT_LOCAL_TASK : MENU_LOCAL_TASK,
         'file' => 'stringoverrides.admin.inc',
       );
     }
@@ -77,7 +77,7 @@ function stringoverrides_menu() {
   else {
     $items['admin/config/regional/stringoverrides/manage/en'] = array(
       'title' => 'Overrides',
-      'page callback' => 'drupal_get_form',
+      'page callback' => 'backdrop_get_form',
       'page arguments' => array('stringoverrides_admin', 'en'),
       'access arguments' => array('administer string overrides'),
       'type' => MENU_DEFAULT_LOCAL_TASK,
@@ -97,5 +97,13 @@ function stringoverrides_theme() {
       'render element' => 'form',
       'file' => 'stringoverrides.admin.inc',
     ),
+  );
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function stringoverrides_autoload_info() {
+  return array(
   );
 }

@@ -10,7 +10,7 @@
 function stringoverrides_migrate_admin_import() {
   $form = array();
   $form['#attributes'] = array('enctype' => "multipart/form-data");
-  $languages = module_exists('locale') ? locale_language_list() : array('en' => t('English'));
+  $languages = module_exists('locale')?locale_language_list() : array('en' => t('English'));
   $form['file'] = array(
     '#type' => 'file',
     '#title' => t('File'),
@@ -42,7 +42,7 @@ function stringoverrides_migrate_admin_import_submit($form, &$form_state) {
   }
 
   // Try to allocate enough time to parse and import the data.
-  drupal_set_time_limit(240);
+  backdrop_set_time_limit(240);
   $lang = $form_state['values']['lang'];
 
   // Get strings from file (returns on failure after a partial import, or on success)
@@ -56,15 +56,16 @@ function stringoverrides_migrate_admin_import_submit($form, &$form_state) {
   $strings = _locale_import_one_string('mem-report');
 
   file_delete($file);
+  // TODO This variable was probably removed in Backdrop without replacement.
   variable_set("locale_custom_strings_$lang", $strings);
-  drupal_set_message(t('The overrides have been imported.'));
+  backdrop_set_message(t('The overrides have been imported.'));
 }
 
 /**
  * Ability to export a *.po file.
  */
 function stringoverrides_migrate_admin_export() {
-  $languages = module_exists('locale') ? locale_language_list() : array('en' => t('English'));
+  $languages = module_exists('locale')?locale_language_list() : array('en' => t('English'));
   $form['lang'] = array(
     '#type' => 'select',
     '#title' => t('Language'),
@@ -95,10 +96,10 @@ function stringoverrides_migrate_admin_export_submit($form, &$form_state) {
     'Cache-Control' => 'private',
   );
   foreach ($headers as $name => $value) {
-    drupal_add_http_header($name, $value);
+    backdrop_add_http_header($name, $value);
   }
   echo $export;
-  drupal_exit();
+  backdrop_exit();
 }
 
 /**
@@ -107,6 +108,7 @@ function stringoverrides_migrate_admin_export_submit($form, &$form_state) {
 function stringoverrides_migrate_admin_export_text($lang = 'en') {
   $languages = language_list();
 
+  // TODO This variable was probably removed in Backdrop without replacement.
   $custom_strings = variable_get("locale_custom_strings_$lang", array());
   foreach ($custom_strings as $context => $translations) {
     foreach ($translations as $source => $translation) {

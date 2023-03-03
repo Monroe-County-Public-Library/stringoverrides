@@ -17,7 +17,7 @@ function stringoverrides_admin($form, $form_state, $lang = NULL) {
 
   // Setup the form
   $form['#cache'] = TRUE;
-  $form['#attached']['css'][drupal_get_path('module', 'stringoverrides') . '/stringoverrides.admin.css'] = array();
+  $form['#attached']['css'][backdrop_get_path('module', 'stringoverrides') . '/stringoverrides.admin.css'] = array();
   $form['lang'] = array(
     '#type' => 'hidden',
     '#value' => $lang,
@@ -28,9 +28,11 @@ function stringoverrides_admin($form, $form_state, $lang = NULL) {
   );
 
   // Retrieve the string overrides from the variables table.
+  // TODO This variable was probably removed in Backdrop without replacement.
+  // TODO This variable was probably removed in Backdrop without replacement.
   $words = array(
     FALSE => variable_get("locale_custom_disabled_strings_$lang", array()),
-    TRUE => variable_get("locale_custom_strings_$lang", array())
+    TRUE => variable_get("locale_custom_strings_$lang", array()),
   );
   $strings = array();
   foreach ($words as $enabled => $custom_strings) {
@@ -109,7 +111,10 @@ function stringoverrides_admin_submit($form, &$form_state) {
   }
 
   // Format the words correctly so that they're put into the database correctly.
-  $words = array(FALSE => array(), TRUE => array());
+  $words = array(
+    FALSE => array(),
+    TRUE => array(),
+  );
   foreach ($form_state['values']['string'] as $index => $string) {
     if (!empty($string['source'])) {
       $context = check_plain($string['context']);
@@ -125,18 +130,21 @@ function stringoverrides_admin_submit($form, &$form_state) {
     $language = language_default();
     $lang = $language->language;
   }
+  // TODO This variable was probably removed in Backdrop without replacement.
   variable_set("locale_custom_strings_$lang", $words[1]);
 
   // Save the values and display a message to the user depend.
   switch ($form_state['clicked_button']['#id']) {
     case 'edit-save':
+      // TODO This variable was probably removed in Backdrop without replacement.
       variable_set("locale_custom_disabled_strings_$lang", $words[0]);
-      drupal_set_message(t('Your changes have been saved.'));
+      backdrop_set_message(t('Your changes have been saved.'));
       break;
 
     case 'edit-remove':
+      // TODO This variable was probably removed in Backdrop without replacement.
       variable_del("locale_custom_disabled_strings_$lang");
-      drupal_set_message(t('The disabled strings have been removed.'));
+      backdrop_set_message(t('The disabled strings have been removed.'));
       break;
   }
 }
@@ -148,7 +156,7 @@ function stringoverrides_textbox_combo($delta = 0, $enabled = TRUE, $context = '
   $form['#tree'] = TRUE;
   $form['enabled'] = array(
     '#type' => 'checkbox',
-    '#default_value' => ($enabled == -1) ? TRUE : $enabled,
+    '#default_value' => ($enabled == -1)?TRUE : $enabled,
     // Have access if it's not a placeholder value.
     '#access' => $enabled != -1,
     '#attributes' => array(
@@ -205,10 +213,22 @@ function theme_stringoverrides_strings($variables) {
     // Build the table row.
     $rows[$key] = array(
       'data' => array(
-        array('data' => drupal_render($form[$key]['enabled']), 'class' => 'stringoverrides-enabled'),
-        array('data' => drupal_render($form[$key]['source']), 'class' => 'stringoverrides-source'),
-        array('data' => drupal_render($form[$key]['translation']), 'class' => 'stringoverrides-translation'),
-        array('data' => drupal_render($form[$key]['context']), 'class' => 'stringoverrides-context'),
+        array(
+          'data' => backdrop_render($form[$key]['enabled']),
+          'class' => 'stringoverrides-enabled',
+        ),
+        array(
+          'data' => backdrop_render($form[$key]['source']),
+          'class' => 'stringoverrides-source',
+        ),
+        array(
+          'data' => backdrop_render($form[$key]['translation']),
+          'class' => 'stringoverrides-translation',
+        ),
+        array(
+          'data' => backdrop_render($form[$key]['context']),
+          'class' => 'stringoverrides-context',
+        ),
       ),
     );
     // Add any attributes on the element to the row, such as the ahah class.
@@ -217,10 +237,22 @@ function theme_stringoverrides_strings($variables) {
     }
   }
   $header = array(
-    ($form[0]['enabled']['#access']) ? array('data' => t('Enabled'), 'title' => t('Flag whether the given override should be active.')) : NULL,
-    array('data' => t('Original'), 'title' => t('The original source text to be replaced.')),
-    array('data' => t('Replacement'), 'title' => t('The text to replace the original source text.')),
-    array('data' => t('Context'), 'title' => t('Some strings have context applied to them. In those cases, you can provide the context in this column.')),
+    ($form[0]['enabled']['#access'])?array(
+      'data' => t('Enabled'),
+      'title' => t('Flag whether the given override should be active.'),
+    ) : NULL,
+    array(
+      'data' => t('Original'),
+      'title' => t('The original source text to be replaced.'),
+    ),
+    array(
+      'data' => t('Replacement'),
+      'title' => t('The text to replace the original source text.'),
+    ),
+    array(
+      'data' => t('Context'),
+      'title' => t('Some strings have context applied to them. In those cases, you can provide the context in this column.'),
+    ),
   );
 
   $output = theme('table', array(
@@ -228,7 +260,7 @@ function theme_stringoverrides_strings($variables) {
     'rows' => $rows,
     'attributes' => array('id' => 'stringoverrides-wrapper'),
   ));
-  $output .= drupal_render_children($form);
+  $output .= backdrop_render_children($form);
   return $output;
 }
 

@@ -96,9 +96,11 @@ function drush_stringoverrides_list() {
   $language = drush_get_option('language', 'en');
 
   // Retrieve the string overrides from the variables table.
+  // TODO This variable was probably removed in Backdrop without replacement.
+  // TODO This variable was probably removed in Backdrop without replacement.
   $words = array(
     FALSE => variable_get("locale_custom_disabled_strings_$language", array()),
-    TRUE => variable_get("locale_custom_strings_$language", array())
+    TRUE => variable_get("locale_custom_strings_$language", array()),
   );
   foreach ($words as $enabled => $custom_strings) {
     foreach ($custom_strings as $context => $translations) {
@@ -125,7 +127,7 @@ function drush_stringoverrides_list() {
     $rows[] = array(dt(''), dt('Original'), dt('Replacement'), dt('Context'));
     foreach ($strings as $string) {
       $rows[] = array(
-        $string['enabled'] ? dt('[X]') : dt('[ ]'),
+        $string['enabled']?dt('[X]') : dt('[ ]'),
         $string['source'],
         $string['translation'],
         $string['context'],
@@ -146,8 +148,10 @@ function drush_stringoverrides_set($original, $replacement) {
   $context = drush_get_option('context', '');
 
   // Load all the strings.
+  // TODO This variable was probably removed in Backdrop without replacement.
   $custom_strings = variable_get('locale_custom_strings_' . $language, array());
   $custom_strings[$context][$original] = $replacement;
+  // TODO This variable was probably removed in Backdrop without replacement.
   variable_set('locale_custom_strings_' . $language, $custom_strings);
   drush_print(dt('The string override has been set.'));
 }
@@ -161,7 +165,9 @@ function drush_stringoverrides_enable($original) {
   $context = drush_get_option('context', '');
 
   // Load the current overrides.
+  // TODO This variable was probably removed in Backdrop without replacement.
   $disabled = variable_get("locale_custom_disabled_strings_$language", array());
+  // TODO This variable was probably removed in Backdrop without replacement.
   $enabled = variable_get("locale_custom_strings_$language", array());
 
   // Make sure the override exists.
@@ -169,7 +175,9 @@ function drush_stringoverrides_enable($original) {
     // Swap the values.
     $enabled[$context][$original] = $disabled[$context][$original];
     unset($disabled[$context][$original]);
+    // TODO This variable was probably removed in Backdrop without replacement.
     variable_set("locale_custom_disabled_strings_$language", $disabled);
+    // TODO This variable was probably removed in Backdrop without replacement.
     variable_set("locale_custom_strings_$language", $enabled);
     drush_print(dt('The string override has been enabled.'));
   }
@@ -187,7 +195,9 @@ function drush_stringoverrides_disable($original) {
   $context = drush_get_option('context', '');
 
   // Load the current overrides.
+  // TODO This variable was probably removed in Backdrop without replacement.
   $disabled = variable_get("locale_custom_disabled_strings_$language", array());
+  // TODO This variable was probably removed in Backdrop without replacement.
   $enabled = variable_get("locale_custom_strings_$language", array());
 
   // Make sure the override exists.
@@ -195,7 +205,9 @@ function drush_stringoverrides_disable($original) {
     // Swap the values.
     $disabled[$context][$original] = $enabled[$context][$original];
     unset($enabled[$context][$original]);
+    // TODO This variable was probably removed in Backdrop without replacement.
     variable_set("locale_custom_disabled_strings_$language", $disabled);
+    // TODO This variable was probably removed in Backdrop without replacement.
     variable_set("locale_custom_strings_$language", $enabled);
     drush_print(dt('The string override has been disabled.'));
   }
@@ -213,13 +225,17 @@ function drush_stringoverrides_remove($original) {
   $context = drush_get_option('context', '');
 
   // Load the current overrides.
+  // TODO This variable was probably removed in Backdrop without replacement.
   $disabled = variable_get("locale_custom_disabled_strings_$language", array());
+  // TODO This variable was probably removed in Backdrop without replacement.
   $enabled = variable_get("locale_custom_strings_$language", array());
 
   // Remove the string override.
   unset($disabled[$context][$original]);
   unset($enabled[$context][$original]);
+  // TODO This variable was probably removed in Backdrop without replacement.
   variable_set("locale_custom_disabled_strings_$language", $disabled);
+  // TODO This variable was probably removed in Backdrop without replacement.
   variable_set("locale_custom_strings_$language", $enabled);
   drush_print(dt('String override removed.'));
 }

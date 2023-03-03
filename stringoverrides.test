@@ -8,9 +8,9 @@
 /**
  * Tests the functionality of the Simpletest example content type.
  */
-class StringOverridesTestCase extends DrupalWebTestCase {
+class StringOverridesTestCase extends BackdropWebTestCase {
   /**
-   * The install profile to use when installing Drupal to test.
+   * The install profile to use when installing Backdrop to test.
    */
   protected $profile = 'testing';
 
@@ -38,7 +38,7 @@ class StringOverridesTestCase extends DrupalWebTestCase {
     parent::setUp('stringoverrides');
 
     // Create the user to test on.
-    $this->user = $this->drupalCreateUser();
+    $this->user = $this->backdropCreateUser();
   }
 
   /**
@@ -46,20 +46,20 @@ class StringOverridesTestCase extends DrupalWebTestCase {
    */
   function testStringOverrides() {
     // Login as a user with permissions.
-    $this->drupalLogin($this->user);
-    $this->drupalGet('user');
+    $this->backdropLogin($this->user);
+    $this->backdropGet('user');
     $this->assertResponse(200, 'User has logged in.');
 
     // Ensure unauthenticated users do not have access.
-    $this->drupalGet('admin/config/regional/stringoverrides');
+    $this->backdropGet('admin/config/regional/stringoverrides');
     $this->assertResponse(403, 'Unauthenticated users correctly do not have access to String Overrides.');
 
     // Create a user with proper permissions.
-    $this->user = $this->drupalCreateUser(array('administer string overrides'));
-    $this->drupalLogin($this->user);
+    $this->user = $this->backdropCreateUser(array('administer string overrides'));
+    $this->backdropLogin($this->user);
 
     // Check the page to see if it's presented correctly.
-    $this->drupalGet('admin/config/regional/stringoverrides');
+    $this->backdropGet('admin/config/regional/stringoverrides');
     $this->assertResponse(200, 'Authenticated users have access to String Overrides.');
     $this->assertText('Original', 'Original column is presented.');
 
@@ -68,7 +68,7 @@ class StringOverridesTestCase extends DrupalWebTestCase {
       'string[0][source]' => 'Original',
       'string[0][translation]' => 'Initial',
     );
-    $this->drupalPost('admin/config/regional/stringoverrides', $edit, t('Save configuration'));
+    $this->backdropPost('admin/config/regional/stringoverrides', $edit, t('Save configuration'));
 
     // Check whether the Original column header was renamed to Initial.
     $this->assertRaw('Initial</th>', 'Original column has been overriden correctly.');

@@ -5,7 +5,7 @@
  */
 
 /**
- * Implement hook_help().
+ * Implements hook_help().
  */
 function stringoverrides_migrate_help($path, $arg) {
   switch ($path) {
@@ -42,4 +42,12 @@ function stringoverrides_migrate_menu() {
     'file' => 'stringoverrides_migrate.admin.inc',
   );
   return $items;
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function stringoverrides_migrate_autoload_info() {
+  return array(
+  );
 }
