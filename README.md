@@ -17,8 +17,7 @@ Installation
 - Install this module using the official Backdrop CMS instructions at
   https://docs.backdropcms.org/documentation/extend-with-modules.
 
-- Visit the configuration page under Administration > Configuration > Category >
-  Foo (admin/config/category/foo) and enter the required information.
+- Visit the configuration page under Administration > Configuration > Regional and language > String overrides (admin/config/regional/stringoverrides) and enter the required information.
 
 - Visit _admin/settings/stringoverrides_ or _admin/config/regional/stringoverrides_ and fill in the strings you'd like to replace.
 
